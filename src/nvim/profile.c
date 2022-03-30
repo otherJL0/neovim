@@ -225,13 +225,15 @@ void time_pop(proftime_T tp)
   g_prev_time -= tp;
 }
 
-/// Prints the difference between `then` and `now`.
+/// Returns the difference between `then` and `now` as a formatted string
 ///
-/// the format is "msec.usec".
-static void time_diff(proftime_T then, proftime_T now)
+/// @return Static string representing time difference in the form "msec.usec".
+static char *time_diff(proftime_T then, proftime_T now)
 {
   proftime_T diff = profile_sub(now, then);
-  fprintf(time_fd, "%07.3lf", (double)diff / 1.0E6);
+  static char formatted_diff[8];
+  snprintf(formatted_diff, sizeof(formatted_diff), "%07.3lf", (double)diff / 1.0E6);
+  return formatted_diff;
 }
 
 /// Initializes the startuptime code.
@@ -270,17 +272,17 @@ void time_msg(const char *mesg, const proftime_T *start)
 
   // print out the difference between `start` (init earlier) and `now`
   proftime_T now = profile_start();
-  time_diff(g_start_time, now);
+  fprintf(time_fd, "%s", time_diff(g_start_time, now));
 
   // if `start` was supplied, print the diff between `start` and `now`
   if (start != NULL) {
     fprintf(time_fd, "  ");
-    time_diff(*start, now);
+    fprintf(time_fd, "%s", time_diff(*start, now));
   }
 
   // print the difference between the global `g_prev_time` and `now`
   fprintf(time_fd, "  ");
-  time_diff(g_prev_time, now);
+  fprintf(time_fd, "%s", time_diff(g_prev_time, now));
 
   // reset `g_prev_time` and print the message
   g_prev_time = now;
