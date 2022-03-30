@@ -13,7 +13,7 @@
 #include "nvim/profile.h"
 
 #ifdef INCLUDE_GENERATED_DECLARATIONS
-# include "profile.c.generated.h"
+#include "profile.c.generated.h"
 #endif
 
 static proftime_T prof_wait_time;
@@ -43,8 +43,7 @@ proftime_T profile_end(proftime_T tm) FUNC_ATTR_WARN_UNUSED_RESULT
 const char *profile_msg(proftime_T tm) FUNC_ATTR_WARN_UNUSED_RESULT
 {
   static char buf[50];
-  snprintf(buf, sizeof(buf), "%10.6lf",
-           (double)profile_signed(tm) / 1000000000.0);
+  snprintf(buf, sizeof(buf), "%10.6lf", (double)profile_signed(tm) / 1000000000.0);
   return buf;
 }
 
@@ -124,8 +123,7 @@ proftime_T profile_sub(proftime_T tm1, proftime_T tm2) FUNC_ATTR_CONST
 ///
 /// @return if `total` <= `children`, then self, otherwise `self` + `total` -
 ///         `children`
-proftime_T profile_self(proftime_T self, proftime_T total, proftime_T children)
-  FUNC_ATTR_CONST
+proftime_T profile_self(proftime_T self, proftime_T total, proftime_T children) FUNC_ATTR_CONST
 {
   // check that the result won't be negative, which can happen with
   // recursive calls.
@@ -171,8 +169,7 @@ bool profile_equal(proftime_T tm1, proftime_T tm2) FUNC_ATTR_CONST
 /// Converts time duration `tm` (`profile_sub` result) to a signed integer.
 ///
 /// @return signed representation of the given time value
-int64_t profile_signed(proftime_T tm)
-  FUNC_ATTR_CONST
+int64_t profile_signed(proftime_T tm) FUNC_ATTR_CONST
 {
   // (tm > INT64_MAX) is >=150 years, so we can assume it was produced by
   // arithmetic of two proftime_T values.  For human-readable representation
