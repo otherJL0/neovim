@@ -13,7 +13,7 @@
 #include "nvim/profile.h"
 
 #ifdef INCLUDE_GENERATED_DECLARATIONS
-#include "profile.c.generated.h"
+# include "profile.c.generated.h"
 #endif
 
 static proftime_T prof_wait_time;
