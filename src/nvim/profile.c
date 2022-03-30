@@ -275,9 +275,12 @@ void time_msg(const char *mesg, const proftime_T *start)
   fprintf(time_fd, "%s", time_diff(g_start_time, now));
 
   // if `start` was supplied, print the diff between `start` and `now`
+  fprintf(time_fd, "  ");
   if (start != NULL) {
-    fprintf(time_fd, "  ");
     fprintf(time_fd, "%s", time_diff(*start, now));
+  } else {
+    // Preserve spacing to visually align startuptimes
+    fprintf(time_fd, "-------");
   }
 
   // print the difference between the global `g_prev_time` and `now`
